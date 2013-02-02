@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Anime Chart</title>
+		
+		
+		<!-- 1. External javascripts we'll need. -->
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/highcharts-mod.js"></script>
+		<script type="text/javascript" src="js/sprintf.js"></script>
+		<script type="text/javascript" src="js/anime-chart.js"></script>
+		
+		
+		<!-- This part needs to be left in the HTML file <head></head> section... -->
+		<script type="text/javascript">
+
+		// Continue the jQuery scope here...
+		$(document).ready(function() {
+
+
+			// -----------------------------------------------------------------
+			// This script here will be placed into the <head> section of a HTML
+			// page. If you intend for their to be multiple charts on the same
+			// page with different settings/XML files, then copy paste this section
+			// and make and necessary edits. Ensure however, that you give a unique name
+			// for the graph (i.e. change the:    'container'     on the last line to
+			// something unique, and then call your second graph with another <div>
+			// element whose ID is the unique name you gave your second chart.
+
+			// Load the XML file as an object once, and pass the reference to the graph calls.
+			$.get('completed-anime.xml', function(xml) {
+
+				// Create the XML object reference
+				$xmlData = $(xml);
+
+				// Chart Variables
+				var dataLimitValues = {
+					lowYear:				2007,	// Lower year value for the data range (from which show data will be considered).
+					highYear:				2012,	// Higher year value for the data range (up to which which show data will be considered).
+					lowRatingVisible:		1,		// Value from which rating data will be visible (by default).
+					highRatingVisible:		10,		// Value up to which rating data will be visible (by default).
+					lowNumberShows:			0,		// Lower value for the number of shows on the left-hand vertical axis.
+					highNumberShows:		7,		// Higher value for the number of shows on the left-hand vertical axis.
+					tickNumberShows:		1,		// Interval between the lower and higher values for the number of shows. A line will be drawn at each interval value.
+					lowAverageRating:		5.50,	// Lower value for the average rating on the right-hand vertical axis.
+					highAverageRating:		9.00,	// Higher value for the average rating on the right-hand vertical axis.
+					tickAverageRating:		0.50,	// Interval between the lower and higher values for the average rating. The no. of intervals should be the same as the left-hand vertical axis.
+					midpointSeasonDecimal:	0.5,	// The point at which (during a season) all shows that have recenlty started/finished (in the previous 3 months) will be considered.
+					weightPrevSeasons:		20,		// The number of previous seasons (including the current one), where a series was watched, over which a data point should be weight averaged.
+					weightGeoSeriesAPar:	6.00,	// The parameter: 'a' for the geometric series used when determining the weighted culmative average.
+					enableWeightSeries:		true,	// Boolean switch to enable/disable the weighted culmative average data series from being shown. Set to:  true  or  false.
+					enableLeftEdgeSpline:	true,	// Allow spline curves to extend to the left edge of a chart.
+					enableRightEdgeSpline:	false	// Allow spline curves to extend to the right edge of a chart.
+				};
+
+				// Column headings (in the XML file) for which various data points are (e.g. show start/end date, rating, show title, etc).
+				// For:  barchartRatingDate  &  culmativeAverageRatingDate  , you should use the show start or end date:  'Start date' or 'Ending date'.
+				var xmlColumnHeadings = {
+					barchartRatingDate:			'my_start_date',			// Column with the date at which shows will be rated (for the bar chart). Should either be the show start or end date.
+					culmativeAverageRatingDate:	'my_start_date',			// Column with the date at which shows will be rated (for the culmative average). Should either be the show start or end date.
+					ratingColumn:				'my_score',					// Column with the rating for each show.
+					showTitleColumn:			'series_title',				// Column with the show title.
+					showStatusColumn:			'my_status'					// Column with the show status.
+				}
+
+				// Execute the chart functions
+				// func:  XML File, DIV container name, chart options, XML file column headings.
+				$.anime_chart($xmlData, 'container', dataLimitValues, xmlColumnHeadings);
+
+			});
+			// -----------------------------------------------------------------
+
+		// End jQuery scope.
+		});
+		</script>
+
+	</head>
+
+
+
+	<body>
+		
+		<!-- 3. Add the container -->
+		<div id="container" style="width: 800px; height: 450px; margin: 0 auto"></div>
+		
+	</body>
+</html>
