@@ -48,17 +48,17 @@
 					tickAverageRating:		0.50,	// Interval between the lower and higher values for the average rating. The no. of intervals should be the same as the left-hand vertical axis.
 					midpointSeasonDecimal:	0.5,	// The point at which (during a season) all shows that have recenlty started/finished (in the previous 3 months) will be considered.
 					weightPrevSeasons:		20,		// The number of previous seasons (including the current one), where a series was watched, over which a data point should be weight averaged.
-					weightGeoSeriesAPar:	6.00,	// The parameter: 'a' for the geometric series used when determining the weighted culmative average.
-					enableWeightSeries:		true,	// Boolean switch to enable/disable the weighted culmative average data series from being shown. Set to:  true  or  false.
+					weightGeoSeriesAPar:	6.00,	// The parameter: 'a' for the geometric series used when determining the weighted cumulative average.
+					enableWeightSeries:		true,	// Boolean switch to enable/disable the weighted cumulative average data series from being shown. Set to:  true  or  false.
 					enableLeftEdgeSpline:	true,	// Allow spline curves to extend to the left edge of a chart.
 					enableRightEdgeSpline:	false	// Allow spline curves to extend to the right edge of a chart.
 				};
 
 				// Column headings (in the XML file) for which various data points are (e.g. show start/end date, rating, show title, etc).
-				// For:  barchartRatingDate  &  culmativeAverageRatingDate  , you should use the show start or end date:  'Start date' or 'Ending date'.
+				// For:  barchartRatingDate  &  cumulativeAverageRatingDate  , you should use the show start or end date:  'Start date' or 'Ending date'.
 				var xmlColumnHeadings = {
 					barchartRatingDate:			'my_start_date',			// Column with the date at which shows will be rated (for the bar chart). Should either be the show start or end date.
-					culmativeAverageRatingDate:	'my_start_date',			// Column with the date at which shows will be rated (for the culmative average). Should either be the show start or end date.
+					cumulativeAverageRatingDate:'my_start_date',			// Column with the date at which shows will be rated (for the cumulative average). Should either be the show start or end date.
 					ratingColumn:				'my_score',					// Column with the rating for each show.
 					showTitleColumn:			'series_title',				// Column with the show title.
 					showStatusColumn:			'my_status'					// Column with the show status.

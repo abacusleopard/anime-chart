@@ -74,8 +74,8 @@ $(document).ready(function() {
 
 		var languageVariables = {
 			chartTitleText:				'Anime show ratings by year.',				// Char title.
-			culmativeAvgSeriesTitle:	'Culmative avg. rating',					// Culmative average series line  title.
-			weightCulmAvgSeriesTitle:	'Weighted culmative avg. rating',			// Weighted Culmative average series line title.
+			cumulativeAvgSeriesTitle:	'Cumulative avg. rating',					// Cumulative average series line  title.
+			weightCumulAvgSeriesTitle:	'Weighted cumulative avg. rating',			// Weighted cumulative average series line title.
 			yearAxisTitle:				'Year',										// Year axis title (on the bottom horizontal axis).
 			numShowsAxisLabel:			'Number of shows - Bars',					// Number of shows axis label (on the left vertical axis).
 			ratingAxisLabel:			'Rating (out of 10) - Lines',				// Rating axis label (on the right vertical axis).
@@ -110,8 +110,8 @@ $(document).ready(function() {
 			ratingAxisTitleColour:		'#000000',						// The text colour for the average rating axis title.
 			chartBackgroundColour:		'#ffffff',						// Background colour for the chart.
 			tooltipSpacingColour:		'#ffffff',						// Tooltip colour used for spacing characters. The colour is set to white so the spacing characters appear transparent.
-			culmativeAvgGraphColour:	'#0fade1',						// Graph line & point colour for the culmative average series.
-			weightedCAvgGraphColour:	'#e1bc0f'						// Graph line & point colour for the weighted culmative average series.
+			cumulativeAvgGraphColour:	'#0fade1',						// Graph line & point colour for the cumulative average series.
+			weightedCAvgGraphColour:	'#e1bc0f'						// Graph line & point colour for the weighted cumulative average series.
 		}
 
 		return colourVariables;
@@ -135,9 +135,9 @@ $(document).ready(function() {
 
 		var plotDisplayVariables = {
 			animatedDrawOut:			false,	// Controls the animated drawing of the graph when first loaded.
-			culmativeAvgGraphSymbol:	'circle',
+			cumulativeAvgGraphSymbol:	'circle',
 			weightedCAvgGraphSymbol:	'square',
-			culmativeAvgGraphSymSize:	4,
+			cumulativeAvgGraphSymSize:	4,
 			weightedCAvgGraphSymSize:	5
 		}
 
@@ -454,11 +454,11 @@ $(document).ready(function() {
 			var seasonEndPointRightInBoundary = seasonEndPointVars.insideRightBoundary;
 
 
-			// Variable for the weighted culmative average series. We are trying to obtain a list-range of season dates
+			// Variable for the weighted cumulative average series. We are trying to obtain a list-range of season dates
 			// before the first year where we'll be plotting data. That way we can weight the first data point with
 			// data from previous seasons ; how many previous seasons is determined by: chartDataVars.weightPrevSeasons
 			// This variable has been multiplied by 2 because there may be some seasons where no series were watched,
-			// and such seasons won't be counted for the weighted culmative average.
+			// and such seasons won't be counted for the weighted cumulative average.
 			if (chartDataVars.enableWeightSeries == true) {
 				var weightedSeasonEndPointVars = timestampDataPoints(yearListArray, seasonMonthNumberArray, 2 * chartDataVars.weightPrevSeasons, 1);
 				var weightedSeasonEndPointArray = weightedSeasonEndPointVars.points;
@@ -666,7 +666,7 @@ $(document).ready(function() {
 							// Convert these to Integers & then create a UTC timestamp from them.
 							// Note that we use parseFloat rather than parseInt has the Int function
 							// cannot convert strings with leading zeroes (e.g. 09) to numbers.
-							currentShowStartEndDate = $($rowVal.find(xmlColHead.culmativeAverageRatingDate).get(0)).text();
+							currentShowStartEndDate = $($rowVal.find(xmlColHead.cumulativeAverageRatingDate).get(0)).text();
 							currentShowStartEndYear = parseInt(currentShowStartEndDate.substr(0,4), 10);
 							currentShowStartEndMonth = parseFloat(currentShowStartEndDate.substr(5,2), 10) - 1;
 							currentShowStartEndDay = parseFloat(currentShowStartEndDate.substr(8,2), 10);
@@ -727,7 +727,7 @@ $(document).ready(function() {
 								}
 
 
-								// For the weighted culmative average series we need to loop over its mid-point timestamps, check if the anime
+								// For the weighted cumulative average series we need to loop over its mid-point timestamps, check if the anime
 								// started/finished in the previous 3 months, and then if so, increment the show counter & add the show rating.
 								if (chartDataVars.enableWeightSeries == true) {
 									for (n = 0; n < weightedSeasonMidPointArrayLength; n++) {
@@ -776,16 +776,16 @@ $(document).ready(function() {
 
 
 
-			// Create the culmative average dataset.
+			// Create the cumulative average dataset.
 			// Also sort the season shows in seasonMidPointArray[i]['recentShows']
 			// in alphabetical ascending order.
 			var weightedAverageTotalNumSeries = [];
-			var seasonWeightedCulmativeAverage = [];
-			var seasonCulmativeAverage = [];
+			var seasonWeightedcumulativeAverage = [];
+			var seasoncumulativeAverage = [];
 			var weightedSeasonElement = [];
 			var weightedSeasonLeftBoundaryShows = 0;
 
-			var seasonCulmativeAverageValue, seasonMidPointArrayRecentShowsLength, midpointSummedScore, weightedSeasonsWithShow, weightedSeasonIndexMatch;
+			var seasoncumulativeAverageValue, seasonMidPointArrayRecentShowsLength, midpointSummedScore, weightedSeasonsWithShow, weightedSeasonIndexMatch;
 			var weightedSeasonLeftBoundaryIndex;
 
 			for (i = 0; i < seasonMidPointArrayLength; i++) {
@@ -794,9 +794,9 @@ $(document).ready(function() {
 				seasonMidPointArray[i]['recentShows'].sort(showTitleSort);
 				seasonMidPointElement = seasonMidPointArray[i];
 
-				// Create culmative dataset
-				seasonCulmativeAverageValue = Math.round( (seasonMidPointElement['summedScores'] / seasonMidPointElement['summedShows']) * 100 ) / 100;
-				seasonCulmativeAverage[i] = [seasonMidPointElement['midpointDate'], seasonCulmativeAverageValue];
+				// Create cumulative dataset
+				seasoncumulativeAverageValue = Math.round( (seasonMidPointElement['summedScores'] / seasonMidPointElement['summedShows']) * 100 ) / 100;
+				seasoncumulativeAverage[i] = [seasonMidPointElement['midpointDate'], seasoncumulativeAverageValue];
 				
 				// Determine the average recent show score.
 				seasonMidPointArrayRecentShowsLength = seasonMidPointElement['recentShows'].length;
@@ -812,7 +812,7 @@ $(document).ready(function() {
 					seasonMidPointArray[i]['midpointAverageScore'] = Math.round( (midpointSummedScore / seasonMidPointArrayRecentShowsLength) * 100 ) / 100;
 				}
 
-				// Weighted culmative average series.
+				// Weighted cumulative average series.
 				// Reset some variables
 				if (chartDataVars.enableWeightSeries == true) {
 					weightedSeasonsWithShow = 0;
@@ -859,7 +859,7 @@ $(document).ready(function() {
 
 
 					// Add the weighted data point to the weighted series array.
-					seasonWeightedCulmativeAverage[i] = [seasonMidPointElement['midpointDate'], Math.round(weightedSeasonElement.totalDataPoint * 100) / 100];
+					seasonWeightedcumulativeAverage[i] = [seasonMidPointElement['midpointDate'], Math.round(weightedSeasonElement.totalDataPoint * 100) / 100];
 					weightedAverageTotalNumSeries[i] = weightedSeasonElement.totalNumSeries;
 				}
 			}
@@ -868,16 +868,16 @@ $(document).ready(function() {
 			// Determine the left & right boundary mid-point y-values for the standard graph line.
 			if (chartDataVars.enableLeftEdgeSpline == true) {
 				var seasonLeftBoundaryMidPointYCoord = seasonMidPointLeftBoundarySummedScores / seasonMidPointLeftBoundarySummedShows;
-				var seasonLeftBoundaryYCoord = yEdgePoint(seasonEndPointLeftInBoundary, seasonMidPointLeftBoundary, seasonCulmativeAverage[0][0], seasonLeftBoundaryMidPointYCoord, seasonCulmativeAverage[0][1]);
-				seasonCulmativeAverage.unshift(hiddenPoint(seasonEndPointLeftInBoundary, seasonLeftBoundaryYCoord, colourVars.culmativeAvgGraphColour, colourVars.culmativeAvgGraphColour));
+				var seasonLeftBoundaryYCoord = yEdgePoint(seasonEndPointLeftInBoundary, seasonMidPointLeftBoundary, seasoncumulativeAverage[0][0], seasonLeftBoundaryMidPointYCoord, seasoncumulativeAverage[0][1]);
+				seasoncumulativeAverage.unshift(hiddenPoint(seasonEndPointLeftInBoundary, seasonLeftBoundaryYCoord, colourVars.cumulativeAvgGraphColour, colourVars.cumulativeAvgGraphColour));
 			}
 			
 			if (chartDataVars.enableRightEdgeSpline == true) {
 				// yEdgePoint(xEdgePoint, xOnePoint, xTwoPoint, yOnePoint, yTwoPoint)
-				var seasonCulmativeAverageLength = seasonCulmativeAverage.length;
+				var seasoncumulativeAverageLength = seasoncumulativeAverage.length;
 				var seasonRightBoundaryMidPointYCoord = seasonMidPointRightBoundarySummedScores / seasonMidPointRightBoundarySummedShows;
-				var seasonRightBoundaryYCoord = yEdgePoint(seasonEndPointRightInBoundary, seasonCulmativeAverage[seasonCulmativeAverageLength - 1][0], seasonMidPointRightBoundary, seasonCulmativeAverage[seasonCulmativeAverageLength - 1][1], seasonRightBoundaryMidPointYCoord);
-				seasonCulmativeAverage.push(hiddenPoint(seasonEndPointRightInBoundary, seasonRightBoundaryYCoord, colourVars.culmativeAvgGraphColour, colourVars.culmativeAvgGraphColour));
+				var seasonRightBoundaryYCoord = yEdgePoint(seasonEndPointRightInBoundary, seasoncumulativeAverage[seasoncumulativeAverageLength - 1][0], seasonMidPointRightBoundary, seasoncumulativeAverage[seasoncumulativeAverageLength - 1][1], seasonRightBoundaryMidPointYCoord);
+				seasoncumulativeAverage.push(hiddenPoint(seasonEndPointRightInBoundary, seasonRightBoundaryYCoord, colourVars.cumulativeAvgGraphColour, colourVars.cumulativeAvgGraphColour));
 			}
 
 
@@ -887,8 +887,8 @@ $(document).ready(function() {
 
 				if (chartDataVars.enableLeftEdgeSpline == true) {
 					var weightedSeasonLeftBoundaryElement = geometricSum(chartDataVars, weightedSeasonLeftBoundaryShows, weightedSeasonLeftBoundaryIndex, weightedSeasonMidPointArray);
-					var weightedSeasonLeftBoundaryYCoord = yEdgePoint(seasonEndPointLeftInBoundary, weightedSeasonMidPointLeftBoundary, seasonWeightedCulmativeAverage[0][0], weightedSeasonLeftBoundaryElement.totalDataPoint, seasonWeightedCulmativeAverage[0][1]);
-					seasonWeightedCulmativeAverage.unshift(hiddenPoint(seasonEndPointLeftInBoundary, weightedSeasonLeftBoundaryYCoord, colourVars.weightedCAvgGraphColour, colourVars.weightedCAvgGraphColour));
+					var weightedSeasonLeftBoundaryYCoord = yEdgePoint(seasonEndPointLeftInBoundary, weightedSeasonMidPointLeftBoundary, seasonWeightedcumulativeAverage[0][0], weightedSeasonLeftBoundaryElement.totalDataPoint, seasonWeightedcumulativeAverage[0][1]);
+					seasonWeightedcumulativeAverage.unshift(hiddenPoint(seasonEndPointLeftInBoundary, weightedSeasonLeftBoundaryYCoord, colourVars.weightedCAvgGraphColour, colourVars.weightedCAvgGraphColour));
 				}
 
 				// For the weighted right-boundary mid-point we can use the final index value (weightedSeasonLeftBoundaryIndex), add 1 to it, and then insert
@@ -902,10 +902,10 @@ $(document).ready(function() {
 					weightedSeasonMidPointArray[weightedSeasonRightBoundaryIndex]['seasonSummedScores'] = weightedSeasonMidPointRightBoundarySummedScores;
 					weightedSeasonMidPointArray[weightedSeasonRightBoundaryIndex]['seasonSummedShows'] = weightedSeasonMidPointRightBoundarySummedShows;
 					
-					var seasonWeightedCulmativeAverageLength = seasonWeightedCulmativeAverage.length;
+					var seasonWeightedcumulativeAverageLength = seasonWeightedcumulativeAverage.length;
 					var weightedSeasonRightBoundaryElement = geometricSum(chartDataVars, weightedSeasonRightBoundaryShows, weightedSeasonRightBoundaryIndex, weightedSeasonMidPointArray);
-					var weightedSeasonRightBoundaryYCoord = yEdgePoint(seasonEndPointRightInBoundary, seasonWeightedCulmativeAverage[seasonWeightedCulmativeAverageLength - 1][0], weightedSeasonMidPointRightBoundary, seasonWeightedCulmativeAverage[seasonWeightedCulmativeAverageLength - 1][1], weightedSeasonRightBoundaryElement.totalDataPoint);
-					seasonWeightedCulmativeAverage.push(hiddenPoint(seasonEndPointRightInBoundary, weightedSeasonRightBoundaryYCoord, colourVars.weightedCAvgGraphColour, colourVars.weightedCAvgGraphColour));					
+					var weightedSeasonRightBoundaryYCoord = yEdgePoint(seasonEndPointRightInBoundary, seasonWeightedcumulativeAverage[seasonWeightedcumulativeAverageLength - 1][0], weightedSeasonMidPointRightBoundary, seasonWeightedcumulativeAverage[seasonWeightedcumulativeAverageLength - 1][1], weightedSeasonRightBoundaryElement.totalDataPoint);
+					seasonWeightedcumulativeAverage.push(hiddenPoint(seasonEndPointRightInBoundary, weightedSeasonRightBoundaryYCoord, colourVars.weightedCAvgGraphColour, colourVars.weightedCAvgGraphColour));					
 				}
 			}
 
@@ -954,7 +954,7 @@ $(document).ready(function() {
 
 							// Determine if we're dealing with a datetime data type... Plus some common strings we'll need.
 							var isDateTimeType = (this.series.xAxis.options.type == 'datetime') ? true : false;
-							var startedFinishedString = (xmlColHead.culmativeAverageRatingDate == 'Start date') ? langVars.startedHoeverLabel : langVars.finishedHoeverLabel;
+							var startedFinishedString = (xmlColHead.cumulativeAverageRatingDate == 'Start date') ? langVars.startedHoeverLabel : langVars.finishedHoeverLabel;
 							var numRecentShowsString = sprintf(langVars.numRecentShowsHoverLabel, startedFinishedString);
 							var recentShowAvgString = sprintf(langVars.recentShowAvgHoverLabel, startedFinishedString);
 							var recentShowRatingString = sprintf(langVars.recentShowRatingHoverLabel, startedFinishedString);
@@ -964,13 +964,13 @@ $(document).ready(function() {
 							tooltipText += smallVerticalSpacingString;
 							tooltipText += sprintf(tooltipSubTitleString, this.series.color, this.series.name, this.point.y);
 
-							// For datetime datapoints (i.e. the culmative average rating data series), we'll be
+							// For datetime datapoints (i.e. the cumulative average rating data series), we'll be
 							// adding some extra stats, plus the series that have recently started/finished.
 							if (isDateTimeType) {
 
 								// Determine if the datetimetype is also a weighted or non-weighted series.
 								// Plus we set the strings/data that depend on this check.
-								var isWeightedSeries = (this.series.name == langVars.weightCulmAvgSeriesTitle) ? true : false;
+								var isWeightedSeries = (this.series.name == langVars.weightCumulAvgSeriesTitle) ? true : false;
 								var totalNumShowsString = (isWeightedSeries) ? sprintf(langVars.weightAvgShowsHoverLabel, startedFinishedString) : sprintf(langVars.totalNumShowsHoverLabel, startedFinishedString);
 
 								// Define some variables.
@@ -1196,29 +1196,29 @@ $(document).ready(function() {
 				options.series.push(seriesOptions);
 			}
 
-			// Place the culmative average data into the series array.
+			// Place the cumulative average data into the series array.
 			var seriesOptions = {
-				name: langVars.culmativeAvgSeriesTitle,
-				color: colourVars.culmativeAvgGraphColour,
+				name: langVars.cumulativeAvgSeriesTitle,
+				color: colourVars.cumulativeAvgGraphColour,
 				type: 'spline',
-				data: seasonCulmativeAverage,
+				data: seasoncumulativeAverage,
 				marker: { 
-							symbol: plotVars.culmativeAvgGraphSymbol,
-							radius: plotVars.culmativeAvgGraphSymSize
+							symbol: plotVars.cumulativeAvgGraphSymbol,
+							radius: plotVars.cumulativeAvgGraphSymSize
 						},
 				xAxis: 1,
 				yAxis: 1
 			}
 			options.series.push(seriesOptions);
 
-			// Place the weighted culmative average data into a series array. We'll only display this if
+			// Place the weighted cumulative average data into a series array. We'll only display this if
 			// enableWeightSeries is set to true.
 			if (chartDataVars.enableWeightSeries == true) {
 				var seriesOptions = {
-					name: langVars.weightCulmAvgSeriesTitle,
+					name: langVars.weightCumulAvgSeriesTitle,
 					color: colourVars.weightedCAvgGraphColour,
 					type: 'spline',
-					data: seasonWeightedCulmativeAverage,
+					data: seasonWeightedcumulativeAverage,
 					marker: { 
 								symbol: plotVars.weightedCAvgGraphSymbol,
 								radius: plotVars.weightedCAvgGraphSymSize
