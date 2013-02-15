@@ -1,0 +1,24 @@
+Highcharts source modification
+==============================
+
+Note that this is for version 2.1.6  of Highcharts. Later versions may not have the correct line(s) for modifying.
+
+
+ Increase vertical spacing between legend items
+ ++++++++++++++++++++++++++++++++++++++++++++++
+
+1) Find:
+
+
+				itemY += itemHeight;
+			}		
+			lastItemY = itemY;
+
+   Replace with:
+
+				itemY += itemHeight + 10;
+			}		
+			lastItemY = itemY + 5;
+
+
+   where 10 is the number of pixels you want between the lines, & 5 is just to ensure the top & bottom margins are equal.

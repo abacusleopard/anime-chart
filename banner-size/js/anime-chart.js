@@ -66,85 +66,6 @@
 $(document).ready(function() {
 
 	// ====================================================================
-	// Language strings, Colour settings, & Font settings.
-
-
-	// Edit/Translate these strings as necessary.
-	function languageStrings() {
-
-		var languageVariables = {
-			chartTitleText:				'Anime show ratings by year.',				// Char title.
-			cumulativeAvgSeriesTitle:	'Cumulative avg. rating',					// Cumulative average series line  title.
-			weightCumulAvgSeriesTitle:	'Weighted cumulative avg. rating',			// Weighted cumulative average series line title.
-			yearAxisTitle:				'Year',										// Year axis title (on the bottom horizontal axis).
-			numShowsAxisLabel:			'Number of shows - Bars',					// Number of shows axis label (on the left vertical axis).
-			ratingAxisLabel:			'Rating (out of 10) - Lines',				// Rating axis label (on the right vertical axis).
-			noDataSeriesLabel:			' (no data)',								// Display (no data) after the series label if there is no data points for it.
-			showsHoverLabel:			'Shows:',									// Show title label when hovering over a data bar.
-			otherStatsHoverLabel:		'Other statistics:',						// Other statistics title label when hovering over a data point.
-			weightAvgShowsHoverLabel:	'No. of weight-averaged, %s shows',			// Total number of shows started/finished (%s) that were weight-averaged. Used on the data point hover label.
-			totalNumShowsHoverLabel:	'Total no. of shows %s',					// Total number of shows started/finished (%s) so far. Used on the data point hover label.
-			numRecentShowsHoverLabel:	'No. of recently %s shows',					// Number of recently started/finished (%s) shows. Used on the data point hover label.
-			recentShowAvgHoverLabel:	'Recently %s show average',					// Average rating for recently started/finished (%s) shows. Used on the data point hover label. 
-			recentShowRatingHoverLabel:	'Recently %s shows - rating:',				// Title for recently started/finished (%s) shows. Used on the data point hover label. 
-			noShowsHoverLabel:			'None',										// Text shown if no shows were watched in a particular season. Used on the data point hover label.
-			startedHoeverLabel:			'started',									// Text shown on a hover label if the data points refers to shows that have just started.
-			finishedHoeverLabel:		'finished',									// Text shown on a hover label if the data points refers to shows that have just finished.
-			divByTen:					'/10',										// Divide by ten string for the rating series labels.
-			emptyString:				'...',										// Shown when no value is present (e.g. the average rating for a season when no series was watched).
-			spacingString:				'.'											// A character used to space other strings out. It will be assigned a white/transparent colour so as not to show.
-		}
-
-		return languageVariables;
-	}
-
-	// Colour Variables
-	function colourStrings() {
-
-		var colourVariables = {
-			barColours:					['#fb9292', '#bc01b0', '#0896d8', '#cb6d21', '#609725', '#cfb820', '#aa4643', '#2d5fa1', '#2a8e69', '#8047a9'],	// Colours for each of the rating bars
-			yearColourBackground:		['#fffbe0', '#ffebeb', '#ebf3ff', '#ebfff8', '#f8edff'],						// The background colours in the chart area - one colour per year area.
-
-			yearAxisTitleColour:		'#000000',						// The text colour for the year axis title.
-			numShowsAxisTitleColour:	'#000000',						// The text colour for the number of shows axis title.
-			ratingAxisTitleColour:		'#000000',						// The text colour for the average rating axis title.
-			chartBackgroundColour:		'#ffffff',						// Background colour for the chart.
-			tooltipSpacingColour:		'#ffffff',						// Tooltip colour used for spacing characters. The colour is set to white so the spacing characters appear transparent.
-			cumulativeAvgGraphColour:	'#0fade1',						// Graph line & point colour for the cumulative average series.
-			weightedCAvgGraphColour:	'#e1bc0f'						// Graph line & point colour for the weighted cumulative average series.
-		}
-
-		return colourVariables;
-	}
-
-	// Font size variables.
-	function fontSettings() {
-
-		var fontSizeVariables = {
-			generalFontSize:			10,		// General string font size.
-			tooltipTitleFontSize:		11,		// Tooltip title font size.
-			spacingStringMediumSize:	5,		// Invsible vertical spacing string medium font size.
-			spacingStringSmallSize:		2		// Invsible vertical spacing string small font size.
-		}
-
-		return fontSizeVariables;
-	}
-
-	// A couple of settings for the plot (e.g. animated graphs, marker types, etc).
-	function plotSettings() {
-
-		var plotDisplayVariables = {
-			animatedDrawOut:			false,	// Controls the animated drawing of the graph when first loaded.
-			cumulativeAvgGraphSymbol:	'circle',
-			weightedCAvgGraphSymbol:	'square',
-			cumulativeAvgGraphSymSize:	4,
-			weightedCAvgGraphSymSize:	5
-		}
-
-		return plotDisplayVariables;
-	}
-
-	// ====================================================================
 	// Script starts here...
 
 
@@ -406,7 +327,15 @@ $(document).ready(function() {
 				name: 'hidden',
 				x: xValHidden,
 				y: yValHidden,
-				marker: { enabled: false, states: { hover: { radius: 1, fillColor: pointColour, lineColor: lineColour } } }
+				marker: { enabled: false,
+						  states: { 
+								hover: { 
+									radius: 1, 
+									fillColor: 'none', 
+									lineColor: 'none' 
+								} 
+						} 
+				}
 		};
 
 		return hiddenDataPoint;
@@ -932,8 +861,6 @@ $(document).ready(function() {
 
 			// Now we'll setup the graph variables.
 			var options = {
-				// Set Colours
-				colors: colourVars.barColours,
 
 				// Graph type & div ID to render to.
 				chart: {
@@ -1072,7 +999,31 @@ $(document).ready(function() {
 
 				// Graph legend
 				legend: {
-					margin: 25
+					margin:				plotVars.legendMarginPixels,
+					itemMarginTop:		plotVars.legendItemTopMargin,
+					itemMarginBottom:	plotVars.legendItemBottomMargin,
+					padding:			plotVars.legendBorderPadding,
+					align:				plotVars.legendAlignment,
+					verticalAlign:		plotVars.legendVerticalAlignment,
+					x:					plotVars.legendXOffset,
+					y:					plotVars.legendYOffset
+				},
+
+				// Export button positions.
+				navigation: {
+					buttonOptions: {
+						align:			plotVars.exportButtonsAlignment,
+						verticalAlign:	plotVars.exportButtonsVerticalAlign,
+						y:				plotVars.exportButtonsYOffset
+					}
+				},
+
+				exporting: {
+					buttons: {
+						exportButton: {},
+						printButton: {}
+					},
+					width: chartDataVars.exportImageWidth
 				},
 
 				// x-axis title & category list (i.e. the years)
@@ -1125,6 +1076,26 @@ $(document).ready(function() {
 				series: []
 			};
 
+			// Setup the legend width... Check to ensure the variable is actually a number first...
+			if ( ( isNaN(plotVars.legendWidth) == false ) && (plotVars.legendWidth > 0) ) {
+				options.legend.width = plotVars.legendWidth;
+			}
+
+			// Setup the legend height. Check the variable is actually a number first....
+			if ( ( isNaN(plotVars.legendMaxHeight) == false ) && (plotVars.legendMaxHeight > 0) ) {
+				options.legend.maxHeight = plotVars.legendMaxHeight;
+			}
+
+			// Setup the export button positions. Check if the variables are actually numbers first....
+			if ( ( isNaN(plotVars.exportImgButtonXOffset) == false ) && (plotVars.exportImgButtonXOffset > 0) ) {
+				options.exporting.buttons.exportButton.x = plotVars.exportImgButtonXOffset;
+			}
+
+			if ( ( isNaN(plotVars.exportPrtButtonXOffset) == false ) && (plotVars.exportPrtButtonXOffset > 0) ) {
+				options.exporting.buttons.printButton.x = plotVars.exportPrtButtonXOffset;
+			}
+
+			
 			// Define the background plot colours for each year. We set the
 			// bacground colour counter to zero first of all.
 			var yearColourBackgroundCounter = 0;
@@ -1158,7 +1129,10 @@ $(document).ready(function() {
 			// scoreArray, and populate the seriesOptions array to provide the graph this
 			// series information.
 			var seriesLabelNoData = '';
-			var seriesVisible;
+			var seriesVisible, seriesHasData; 
+			var colourLength = colourVars.barColours.length;
+			k = 0;
+
 
 			for (i = 0; i < scoreArray.length; i++) {
 
@@ -1167,12 +1141,14 @@ $(document).ready(function() {
 				// but if we find one year where an anime had a rating then we can show
 				// the series
 				seriesVisible = false;
+				seriesHasData = false;
 				seriesLabelNoData = langVars.noDataSeriesLabel;
 
 				// The loop will be broken once a year with a rating has been found.
 				for (j = 0; j < scoreArray[i].length; j++) {
 					if (scoreArray[i][j] > 0) {
 						seriesVisible = true;
+						seriesHasData = true;
 						seriesLabelNoData = '';
 						break;
 					}
@@ -1189,11 +1165,27 @@ $(document).ready(function() {
 					name: scoreListArray[i].toString() + langVars.divByTen + seriesLabelNoData,
 					type: 'column',
 					data: scoreArray[i],
+					color: colourVars.barColours[k],
 					visible: seriesVisible
 				};
 
+				// Increment the bar colour
+				k = k + 1;
+				if (k == colourLength) {
+					k = 0;
+				}
+
+
 				// Add each series to the series array above.
-				options.series.push(seriesOptions);
+
+				// If we're not showing zero-item series in the chat-legend, then we'll
+				// not add them at this stage. Otherwise we can proceed.
+				if ( (chartDataVars.removeLegendNoDataSeries == true) && (seriesHasData == true) ) {
+					options.series.push(seriesOptions);
+				} else if (chartDataVars.removeLegendNoDataSeries == false) {
+					options.series.push(seriesOptions);
+				}
+
 			}
 
 			// Place the cumulative average data into the series array.

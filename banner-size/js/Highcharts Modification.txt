@@ -1,0 +1,17 @@
+Highcharts source modification
+==============================
+
+Note that this is for version 2.1.6  of Highcharts. Later versions may not have the correct line(s) for modifying.
+
+
+ Increase vertical spacing between legend items
+ ++++++++++++++++++++++++++++++++++++++++++++++
+
+1) Find:
+
+
+			spaceHeight = mathMin(spaceHeight, maxHeight);
+
+   Replace with:
+
+			spaceHeight = maxHeight;

@@ -7,7 +7,9 @@
 		
 		<!-- 1. External javascripts we'll need. -->
 		<script type="text/javascript" src="js/jquery.min.js"></script>
-		<script type="text/javascript" src="js/highcharts-mod.js"></script>
+		<script type="text/javascript" src="js/highcharts.js"></script>
+		<script type="text/javascript" src="js/exporting.js"></script>
+		<script type="text/javascript" src="js/chart-settings.js"></script>
 		<script type="text/javascript" src="js/sprintf.js"></script>
 		<script type="text/javascript" src="js/anime-chart.js"></script>
 		
@@ -36,22 +38,24 @@
 
 				// Chart Variables
 				var dataLimitValues = {
-					lowYear:				2007,	// Lower year value for the data range (from which show data will be considered).
-					highYear:				2012,	// Higher year value for the data range (up to which which show data will be considered).
-					lowRatingVisible:		1,		// Value from which rating data will be visible (by default).
-					highRatingVisible:		10,		// Value up to which rating data will be visible (by default).
-					lowNumberShows:			0,		// Lower value for the number of shows on the left-hand vertical axis.
-					highNumberShows:		7,		// Higher value for the number of shows on the left-hand vertical axis.
-					tickNumberShows:		1,		// Interval between the lower and higher values for the number of shows. A line will be drawn at each interval value.
-					lowAverageRating:		5.50,	// Lower value for the average rating on the right-hand vertical axis.
-					highAverageRating:		9.00,	// Higher value for the average rating on the right-hand vertical axis.
-					tickAverageRating:		0.50,	// Interval between the lower and higher values for the average rating. The no. of intervals should be the same as the left-hand vertical axis.
-					midpointSeasonDecimal:	0.5,	// The point at which (during a season) all shows that have recenlty started/finished (in the previous 3 months) will be considered.
-					weightPrevSeasons:		20,		// The number of previous seasons (including the current one), where a series was watched, over which a data point should be weight averaged.
-					weightGeoSeriesAPar:	6.00,	// The parameter: 'a' for the geometric series used when determining the weighted cumulative average.
-					enableWeightSeries:		true,	// Boolean switch to enable/disable the weighted cumulative average data series from being shown. Set to:  true  or  false.
-					enableLeftEdgeSpline:	true,	// Allow spline curves to extend to the left edge of a chart.
-					enableRightEdgeSpline:	false	// Allow spline curves to extend to the right edge of a chart.
+					lowYear:					2007,	// Lower year value for the data range (from which show data will be considered).
+					highYear:					2012,	// Higher year value for the data range (up to which which show data will be considered).
+					lowRatingVisible:			1,		// Value from which rating data will be visible (by default).
+					highRatingVisible:			10,		// Value up to which rating data will be visible (by default).
+					removeLegendNoDataSeries:	false,	// If a series has no data item, then remove it from the legend.
+					lowNumberShows:				0,		// Lower value for the number of shows on the left-hand vertical axis.
+					highNumberShows:			7,		// Higher value for the number of shows on the left-hand vertical axis.
+					tickNumberShows:			1,		// Interval between the lower and higher values for the number of shows. A line will be drawn at each interval value.
+					lowAverageRating:			5.50,	// Lower value for the average rating on the right-hand vertical axis.
+					highAverageRating:			9.00,	// Higher value for the average rating on the right-hand vertical axis.
+					tickAverageRating:			0.50,	// Interval between the lower and higher values for the average rating. The no. of intervals should be the same as the left-hand vertical axis.
+					midpointSeasonDecimal:		0.5,	// The point at which (during a season) all shows that have recenlty started/finished (in the previous 3 months) will be considered.
+					weightPrevSeasons:			20,		// The number of previous seasons (including the current one), where a series was watched, over which a data point should be weight averaged.
+					weightGeoSeriesAPar:		6.00,	// The parameter: 'a' for the geometric series used when determining the weighted cumulative average.
+					enableWeightSeries:			true,	// Boolean switch to enable/disable the weighted cumulative average data series from being shown. Set to:  true  or  false.
+					enableLeftEdgeSpline:		true,	// Allow spline curves to extend to the left edge of a chart.
+					enableRightEdgeSpline:		false,	// Allow spline curves to extend to the right edge of a chart..
+					exportImageWidth:			800		// Exported image width in pixels. Set this to the div width below for an image of the same size.
 				};
 
 				// Column headings (in the XML file) for which various data points are (e.g. show start/end date, rating, show title, etc).
